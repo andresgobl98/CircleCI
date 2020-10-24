@@ -1,11 +1,28 @@
 version: 2.1
-jobs:
-  build:
-    docker: 
-      - image: cimg/node:14.10.1 # the primary container, where your job's commands are run
-        auth:
-          username: andresgobl98
-          password: eelcdd98dafg  # context / project UI env-var reference
-    steps:
-      - checkout # check out the code in the project directory
-      - run: echo "hello world" # run the `echo` command
+
+ jobs:
+   #build:
+     #...
+   deploy:
+     machine:
+       enabled: true
+     steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "f2:88:e9:39:e0:f8:f6:ed:8d:c4:4d:37:a0:a6:e1:a6"
+       - run:
+           name: Deploy Over SSH
+           command: |
+             ssh maquina1@157.55.199.78 "echo Hello > hello.txt"
+
+ workflows:
+   version: 2.1
+   build-and-deploy:
+     jobs:
+       #- build
+       - deploy:
+           #requires:
+             #- build # only deploy once build job has completed
+           filters:
+             branches:
+               only: master # only deploy on the master branch
