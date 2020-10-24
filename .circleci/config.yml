@@ -1,28 +1,27 @@
 version: 2.1
-
- jobs:
-   #build:
-     #...
-   deploy:
-     machine:
-       enabled: true
-     steps:
+jobs:
+  #build:
+    #...
+  deploy:
+    machine:
+      enabled: true
+    steps:
       - add_ssh_keys:
           fingerprints:
             - "f2:88:e9:39:e0:f8:f6:ed:8d:c4:4d:37:a0:a6:e1:a6"
-       - run:
-           name: Deploy Over SSH
-           command: |
-             ssh maquina1@157.55.199.78 "echo Hello > hello.txt"
+      - run:
+          name: Deploy Over SSH
+          command: |
+             ssh maquina1@157.55.199.78 "echo Hello > hello.txt" 
 
- workflows:
-   version: 2.1
-   build-and-deploy:
-     jobs:
-       #- build
-       - deploy:
-           #requires:
-             #- build # only deploy once build job has completed
-           filters:
-             branches:
-               only: master # only deploy on the master branch
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      #- build
+      - deploy:
+          #requires:
+          #  - build # only deploy once build job has completed
+          filters:
+            branches:
+              only: despliegueSSH # only deploy on the master branch
